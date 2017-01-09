@@ -7,6 +7,7 @@ require('../css/App.css')
 
 const titles = ['c','c1','c2','/','7','8','9','*','4','5','6','-','1','2','3','+','0','.','=']
 const highlightIndexes = [3,7,11,15,18]
+const limitErrorDescription = 'over flow'
 
 export default class App extends Component {
 
@@ -27,6 +28,9 @@ export default class App extends Component {
         if (shouldRestart == true) {
             return
         }
+        // if (this.checkInputLimit()) {
+        //     return
+        // }
         this.ast.push(parseFloat(this.state.bigInput))
         switch (inputValue) {
             case '+':
@@ -56,7 +60,12 @@ export default class App extends Component {
             this.setState({bigInput: '0', smallInput: '0', bigInputShouldRestart: true, smallInputShouldRestart: true})
             return
         }
-
+        if (this.state.bigInput == '0' && inputValue == '0') {
+            return
+        }
+        if (this.checkInputLimit()) {
+            return
+        }
         var wholeNewValue
         if (this.state.bigInputShouldRestart) {
             wholeNewValue = inputValue
@@ -72,11 +81,26 @@ export default class App extends Component {
         this.setState({bigInput: wholeNewValue, smallInput: smallInput, bigInputShouldRestart: false, smallInputShouldRestart: false})
     }
 
+    checkInputLimit = () => {
+        const  bigInputLength = this.state.bigInput.length
+        const smallInputLength = this.state.smallInput.length
+        if (!this.state.bigInputShouldRestart && bigInputLength > 8 || smallInputLength > 17) {
+            this.setState({bigInput: '0', smallInput: limitErrorDescription, bigInputShouldRestart: true, smallInputShouldRestart: true})
+            return true
+        }
+        return false
+    }
+
     startCaculate = () => {
         console.log(this.ast)
         const ast = this.ast
         var result = this.caculateInArray(ast)
-        this.setState({bigInput: result, bigInputShouldRestart: true, smallInputShouldRestart: true})
+        var resultString = parseFloat(result.toFixed(2)).toString();
+        if (resultString.length > 9) {
+            this.setState({bigInput: '0', smallInput: limitErrorDescription, bigInputShouldRestart: true, smallInputShouldRestart: true})
+            return
+        }
+        this.setState({bigInput: resultString, bigInputShouldRestart: true, smallInputShouldRestart: true})
     }
 
     caculateInArray = (arr) => {

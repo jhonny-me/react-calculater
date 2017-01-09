@@ -28,7 +28,7 @@
     position: relative;
     width: 100%;
     height: 24%;
-    background-color: dimgray;
+    background-color: beige;
     text-align: right;
 }
 
@@ -55,7 +55,7 @@
     width: 100%;
     top: 60%;
     /*margin-top: 60%;*/
-    background-color: cyan;
+    background-color: beige;
     font-family: Digital;
     font-size: 200%;
 }
