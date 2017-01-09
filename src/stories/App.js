@@ -1,7 +1,7 @@
 /**
  * Created by johnny on 04/01/2017.
  */
-import React, {Component, PropTypes} from 'react'
+import React, {Component} from 'react'
 
 require('../css/App.css')
 
@@ -25,7 +25,7 @@ export default class App extends Component {
     handleOperateBtn = (e) => {
         const inputValue = e.target.innerHTML
         var shouldRestart = this.state.bigInputShouldRestart
-        if (shouldRestart == true) {
+        if (shouldRestart === true) {
             return
         }
         // if (this.checkInputLimit()) {
@@ -55,12 +55,12 @@ export default class App extends Component {
 
     handleNumberBtn = (e) => {
         const inputValue = e.target.innerHTML
-        if (inputValue == 'c' || inputValue == 'c1' || inputValue == 'c2') {
+        if (inputValue === 'c' || inputValue === 'c1' || inputValue === 'c2') {
             this.ast = []
             this.setState({bigInput: '0', smallInput: '0', bigInputShouldRestart: true, smallInputShouldRestart: true})
             return
         }
-        if (this.state.bigInput == '0' && inputValue == '0') {
+        if (this.state.bigInput === '0' && inputValue === '0') {
             return
         }
         if (this.checkInputLimit()) {
@@ -84,7 +84,7 @@ export default class App extends Component {
     checkInputLimit = () => {
         const  bigInputLength = this.state.bigInput.length
         const smallInputLength = this.state.smallInput.length
-        if (!this.state.bigInputShouldRestart && bigInputLength > 8 || smallInputLength > 17) {
+        if (!this.state.bigInputShouldRestart && (bigInputLength > 8 || smallInputLength > 17)) {
             this.setState({bigInput: '0', smallInput: limitErrorDescription, bigInputShouldRestart: true, smallInputShouldRestart: true})
             return true
         }
@@ -112,12 +112,12 @@ export default class App extends Component {
         var index
         // find * or / first
         for (var i=0; i<arr.length;i++){
-            if (arr[i] == '*') {
+            if (arr[i] === '*') {
                 value = arr[i-1] * arr[i+1]
                 index = i
                 break
             }
-            if (arr[i] == '/') {
+            if (arr[i] === '/') {
                 value = arr[i-1] / arr[i+1]
                 index = i
                 break
@@ -128,14 +128,14 @@ export default class App extends Component {
             return this.caculateInArray(copyArr)
         }
         // * or / not found, then + or -
-        for (var i=0; i<arr.length;i++){
-            if (arr[i] == '+') {
-                value = arr[i-1] + arr[i+1]
-                index = i
+        for (var j=0; j<arr.length;j++){
+            if (arr[j] === '+') {
+                value = arr[j-1] + arr[j+1]
+                index = j
             }
-            if (arr[i] == '-') {
-                value = arr[i-1] - arr[i+1]
-                index = i
+            if (arr[j] === '-') {
+                value = arr[j-1] - arr[j+1]
+                index = j
             }
         }
         if (value) {
